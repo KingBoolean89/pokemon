@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import React, { Component } from 'react';
+import Form from './components/Form'
+import './App.css';
+import Pokemon from './components/Pokemon';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state = {
+    name: "",
+    isSeen: false,
+    
+  }
+  
+
+  getPokemon = async (e) => {
+    e.preventDefault();
+    const name = e.target.elements.name.value;
+    
+    const api_call = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const data = await api_call.json();
+    if (name){
+    console.log(data);
+    this.setState({
+      name:data.results,
+      isSeen:true,
+      error:""
+    });
+  }else{this.setState({
+      name: undefined,
+    error: "Please enter Name"
+    });
+
+  }
+ } 
+  render() {
+    return (
+      <div className="App">
+        
+        <Form getPokemon={this.getPokemon} />
+        <Pokemon 
+          name={this.state.name}
+          error={this.state.error}
+          
+         />
+      </div>
+    );
+  }
 }
-
-export default App;
+export default App
