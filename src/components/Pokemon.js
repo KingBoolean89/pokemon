@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PokemonItem from './PokemonItem';
+import PropTypes from 'prop-types';
 
-
-
-class Pokemon extends React.Component {
+class Pokemon extends Component {
   render() {
-    return (
-      <div>
-     	{this.props.name &&this.props.isFalse&& <p>Name: { this.props.name }</p>} 
-     	{this.props.error && <p>{ this.props.error }</p>} 
-      </div>
-    );
+    return this.props.pokemon.map((pokemon) => (
+      <PokemonItem key={pokemon.id} pokemon={pokemon} markCaught={this.props.markCaught} delPokemon={this.props.delPokemon} />
+    ));
   }
+}
+
+// PropTypes
+Pokemon.propTypes = {
+  pokemon: PropTypes.array.isRequired,
+  markCaught: PropTypes.func.isRequired,
+  delPokemon: PropTypes.func.isRequired,
 }
 
 export default Pokemon;
